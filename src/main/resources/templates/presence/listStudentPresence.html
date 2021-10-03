@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragments/fragments.html :: head">
+	<meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+
+<body>
+	<div th:replace="fragments/fragments.html :: header"></div>
+
+	<main class="container">
+		<div class="row">
+			<div class="col">
+				<h3 class="title" th:text="#{presence} + ' ' + ${module.code}"></h3>
+				<hr>
+				
+				<h5 class="subtitle" th:text="'Seance Du ' + ${#temporals.format(seance.dateSeance, 'dd-MMM-yyyy')}"></h5>
+				<h5 class="subtitleTime float-right" th:text="'de ' + ${seance.heureDebut} +' à ' + ${seance.heureFin}"></h5>
+			</div>
+		</div>
+		
+		<!-- PRENDRE LES PRESENCE BUTTON -->
+		<div class="row btn-div">
+			<div class="col p-2 text-right button-presence">
+				<!-- SI DATE ACTUELLE ENTRE DATE DEBUT ET DATE FIN DU MODULE LE BOUTON EST AFFICHE -->	
+				<div th:if="${(module.dateDebut <= localDate && module.dateFin >= localDate && seance.dateSeance==localDate && 
+				seance.heureDebut <= localTime && seance.heureFin >= localTime)}">
+				
+				<a sec:authorize="hasAnyRole('PROF','ADMIN')" 
+					class="btn btn-outline-success button-presence"
+					th:href="@{/presence/__${module.code}__/__${seance.id}__/update}"
+					th:text="#{action.takePresence}"></a></div>
+					
+					<!-- SINON AFFICHE MESSAGE SI FIN MODULE -->
+					<div th:unless="${(module.dateDebut <= localDate && module.dateFin >= localDate && seance.dateSeance==localDate && 
+				seance.heureDebut <= localTime && seance.heureFin >= localTime)}">
+				
+					<h5 sec:authorize="hasAnyRole('PROF','ADMIN')"
+						th:if="${module.dateDebut > localDate || module.dateFin < localDate}" 
+						th:text="#{module.end}" class="text-center text-danger"></h5>
+					
+					<!-- SINON AFFICHE MESSAGE SI FIN SEANCE -->
+					<h5 sec:authorize="hasAnyRole('PROF','ADMIN')" 
+					th:unless="${module.dateDebut > localDate || module.dateFin < localDate}" 
+					th:text="#{seance.end}" class="text-center text-danger"></h5></div>
+			</div>
+		</div>
+		
+		<!-- SEARCH BAR -->
+		<div class="containerSearchAdd">
+		<div class="search"><input class="form-control searchInput" id="myInput" 
+		type="text" placeholder="&#xf002 " autofocus></div></div>
+		
+		<div class="row row-div">
+			<div class="col">
+				<div th:if="${!presences.isEmpty()}">
+					<table class="table">
+						<thead>
+							<tr>
+								<th th:text="#{presence.etudiant.nom}"></th>
+								<th th:text="#{presence.etudiant.prenom}"></th>
+								<th class="typePresenceTh" th:text="#{presence.typePresence}"></th>
+								<th class="quotaTh">Quota absences</th>
+								<th th:text="#{actionsCRUD}"></th>
+							</tr>
+						</thead>
+
+						<tbody id="myTable">
+							<tr th:each="presence,iterStat: ${presences}">
+								<td th:text="${presence.etudiant.nom}"></td>
+								<td th:text="${presence.etudiant.prenom}"></td>
+								
+								<!-- TYPE PRESENCE -->
+								<td class="typePresenceTd" th:if="${presence.typePresence}" th:text="${presence.typePresence}"></td>
+								
+								<!-- QUOTA ABSENCE -->
+								<td class="quotaTd" th:if="!${T(org.isfce.pid.service.PresenceServices).totalPA(presence.etudiant.id,presence.seance.module.code)==0}" 
+								th:text="${T(org.isfce.pid.service.PresenceServices).calculPourcentage(presence.etudiant.id,presence.seance.module.code) +'%'}">
+								</td>
+								
+								<!-- VUE DE L'ETUDIANT -->
+								<td>
+									<a th:href="@{'/presence/'+${presence.seance.module.code}+'/etudiant/'+ ${presence.etudiant.id}}"> 
+								    	<i class="fa fa-eye"></i>
+									</a>
+									
+								<!-- DELETE ETUDIANT IF QUOTA ABSENCE > 30 -->								
+								<span th:if="${T(org.isfce.pid.service.PresenceServices).calculPourcentage(presence.etudiant.id,presence.seance.module.code)>=30}"
+									sec:authorize="hasAnyRole('PROF')" 
+									th:msgDelete="#{msgConfirmeDeleteStudent} + ' '+ ${presence.etudiant.prenom} + ' ' + ${presence.etudiant.nom} + '?'"
+									th:lienDelete="@{'/presence/'+ ${presence.seance.module.code}+ '/'+ ${presence.etudiant.id} +'/delete'}" 
+									th:csrfToken="${_csrf.token}" 
+									th:csrfName="${_csrf.parameterName}" 
+									th:onclick='javascript:
+								    var lien= this.getAttribute("lienDelete");
+								    var csrf={};
+								    csrf[this.getAttribute("csrfName")]=this.getAttribute("csrfToken");
+								    bootbox.confirm(this.getAttribute("msgDelete"),
+								    function(ok){
+								      if (ok){ post(lien,csrf);}
+								     })
+								    ' >
+								  <i class="fa fa-trash text-danger"></i>
+								</span>
+																					
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div th:unless="${!presences.isEmpty()}">
+					<p th:text="#{presence.empty}" class="text-center text-warning mt-5 font-weight-bold text-uppercase"></p>
+				</div>
+			</div>
+		</div>
+
+	</main>
+	<div th:replace="fragments/fragments.html :: scripts"></div>
+	<script type="text/javascript">
+      $(document).ready( function() {
+      
+     	// Cache colonne presence si null
+		$(function(){
+   			var hide = true;
+
+   			$('.typePresenceTd').each(function(){
+        		var tdContent = $(this).text();
+
+        		if(tdContent != null){
+            		hide = false;
+        		}
+   			});
+
+   			if(hide){
+      			$('.typePresenceTh').hide();
+   			}
+		});
+		
+		// Cache colonne Quota absence si nbPresence + nbAbsence == 0
+		$(function(){
+   			var hide = true;
+
+   			$('.quotaTd').each(function(){
+        		var tdContent = $(this).text();
+
+        		if(tdContent != null){
+            		hide = false;
+        		}
+   			});
+
+   			if(hide){
+      			$('.quotaTh').hide();
+   			}
+		});
+		
+		// QUOTA COULEUR EN FONCTION DU POURCENTAGE D'ABSENCE
+		$(function(){
+			$('.quotaTd').each(function(){
+				var tdContent = $(this).val();
+			
+				if(tdContent > 30){
+					$(this).css("color","red");
+				}else if(tdContent === 30){
+					$(this).css("color","orange");
+				}else{
+					$(this).css("color","green");
+				}
+			});
+		});
+		
+		// RECHERCHE ETUDIANTS
+ 			$("#myInput").on("keyup", function() {
+    			var value = $(this).val().toLowerCase();
+    			$("#myTable tr").filter(function() {
+      				$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    			});
+  			});
+     })
+	</script>
+	<div th:replace="fragments/fragments.html :: theme"></div>
+	<div th:replace="fragments/fragments.html :: footer"></div>
+</body>
+</html>

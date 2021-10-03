@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:fragment="head">
+<!-- Required meta tags for bootstrap-->
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<title th:text="#{application.titre}"></title>
+<link rel="stylesheet"
+	th:href="@{/webjars/bootstrap/css/bootstrap.min.css/}" />
+<link rel="stylesheet"
+	th:href="@{/webjars/font-awesome/css/font-awesome.min.css}" />
+<link rel="stylesheet" th:href="@{/css/styles.css}" />
+</head>
+<body>
+	<div th:fragment="header">
+		<nav class="navbar navbar-expand-md navbar-light bg-light">
+			<a class="navbar-brand" href="http://www.isfce.org" target="_blank">
+				<img th:src="@{/images/LogoISFCE.png}" width="40" height="40"
+				class="d-inline-block align-top" alt=""> ISFCE
+			</a>
+
+			<ul class="navbar-nav">
+				<li class="nav-item active"><a class="nav-link" th:href="@{/}"
+					th:text="#{navbar.home}">Home </a></li>
+                <li class="nav-item dropdown" sec:authorize="isFullyAuthenticated()">
+                  <a class="nav-link dropdown-toggle" href="#" id="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" th:text="#{cours}"></a>
+                            <div class="dropdown-menu" aria-labelledby="dropdown">
+                                <a sec:authorize="isFullyAuthenticated()" class="dropdown-item" th:href="@{/cours/liste}" th:text="#{navbar.liste}"></a>
+                                <a sec:authorize="hasAnyRole('ROLE_PROF', 'ROLE_ADMIN')" class="dropdown-item" th:href="@{/cours/add}" th:text="#{action.add}"></a>
+<!--                             	<a sec:authorize="hasAnyRole('ROLE_PROF', 'ROLE_ADMIN')" class="dropdown-item" th:href="@{/module/liste}" th:text="#{module.liste.titre}"></a>                            	 -->
+                            </div>
+                 </li> 
+                 <li class="nav-item dropdown" sec:authorize="isFullyAuthenticated()">
+                  <a class="nav-link dropdown-toggle" href="#" id="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" th:text="#{professeur}"></a>
+                            <div class="dropdown-menu" aria-labelledby="dropdown">
+                                <a  class="dropdown-item" th:href="@{/professeur/liste}" th:text="#{navbar.liste}"></a>
+                                <a  class="dropdown-item" th:href="@{/professeur/add}" th:text="#{action.add}"></a>
+                            </div>
+                 </li>
+                 
+                 <!-- LISTE MODULE -->
+                 <li sec:authorize="isFullyAuthenticated()" class="nav-item active"><a class="nav-link" th:href="@{/module/liste}" 
+                 th:text="#{module.liste.titre}">LISTE MODULE </a></li> 
+			</ul>
+
+			<ul class="navbar-nav ml-auto">
+			    <li class="nav-item dropdown" sec:authorize="isFullyAuthenticated()">
+                  <a class="nav-link dropdown-toggle" href="#" id="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" th:text="#{navbar.profile}"></a>
+                            <div class="dropdown-menu" aria-labelledby="dropdown">
+                                <a sec:authorize="isFullyAuthenticated()" class="dropdown-item" th:href="@{|/user/${#authentication.name}/update|}" >
+                                <i	class="fa fa-user" th:text="' '+#{user.changePw}"></i>
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <span class="dropdown-item text-muted" sec:authorize="isFullyAuthenticated()" th:text="${#authentication.authorities}" ></span>
+                            </div>
+                </li> 
+				<!-- SWITCH THEME LIGHT / DARK -->
+				<li> <form class="form_switch fixed" action="#" method="GET">
+        			<div class="custom-control custom-switch">
+            			<input id="switch1" type="checkbox" class="custom-control-input" name="switch1" value="" onclick="fonction_switch()">
+            			<label class="custom-control-label" for="switch1"></label>
+        			</div>
+ 				</form></li> 				
+
+				<li class="nav-item dropdown">
+				   <a
+					 class="nav-link dropdown-toggle" id="langDropdown"
+					 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+					 th:text="${#locale.language} == 'fr' ? #{lang.french} : #{lang.english}">
+				   </a>
+				   <div class="dropdown-menu" aria-labelledby="langDropdown">
+						<a class="dropdown-item"
+							th:href="${#httpServletRequest.requestURI} + '?lang=fr'"
+							th:text="#{lang.french}"></a> <a class="dropdown-item"
+							th:href="${#httpServletRequest.requestURI} + '?lang=en'"
+							th:text="#{lang.english}"></a>
+					</div>
+				</li>
+				
+				<li class="nav-item" sec:authorize="!isFullyAuthenticated()">
+                            <a sec:authorize="!isFullyAuthenticated()" class="fa fa-sign-in fa-1x" aria-hidden="true" th:href="@{/login}">
+                            </a>
+                </li>
+                
+                <li class="nav-item" sec:authorize="isFullyAuthenticated()" >
+                     <form th:action="@{/logout}" method="post">
+                        <Button type="submit" class="btn btn-outline-primary btn-sm">
+                            <span class="fa fa-sign-out fa-1x" aria-hidden="true" 
+                                  th:text="${#authentication.name}"></span>
+                         </Button>
+                      </form>
+                </li> 
+			</ul>
+
+		</nav>
+		
+	</div>
+	#jQuery must come first, then Popper.js, bootstrap.js , bootbox and others JS
+	<div th:fragment="scripts">
+		<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+		<script th:src="@{/webjars/popper.js/2.5.2/umd/popper.min.js}"></script>
+		<script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
+		<script th:src="@{/webjars/bootbox/bootbox.js}"></script>
+		<script th:src="@{/js/myJS.js}"></script>
+	</div>
+	
+	<div th:fragment="theme">
+		<script type="text/javascript">
+			var theme_switcher = document.getElementById("switch1");
+
+    		let on_page_load = localStorage.getItem("theme");
+    		// LORS DU CHARGEMENT DE LA PAGE
+    		if (on_page_load != null && on_page_load === 'DARK') {
+        		theme_switcher.checked = true;
+        		$("body").css("background-color","#2e4053");
+     			$(".navbar").attr("class","navbar navbar-expand-md navbar-light bg-danger");
+     			// TEXT TYPING
+       			$("#typing").css("color","white");
+       			// CURSEUR TYPING
+       			$("#curseur").css("color","white");
+    		}else{
+    			$("body").css("background-color","white");
+        		$(".navbar").attr("class","navbar navbar-expand-md navbar-light bg-light");
+        		// TEXT TYPING
+        		$("#typing").css("color","teal");
+        		// CURSEUR TYPING
+        		$("#curseur").css("color","teal");
+     		}
+    
+    		function fonction_switch() {
+    			if (theme_switcher.checked) {
+    				// STOCK LA VALEUR 'DARK' DANS LA CLE THEME
+            		localStorage.setItem('theme', 'DARK');
+            		// CHANGEMENT BACKGROUND DARK BODY + NAV
+            		$("body").css("background-color","#2e4053");
+       				$(".navbar").attr("class","navbar navbar-expand-md navbar-light bg-danger");
+       				// TEXT TYPING
+       				$("#typing").css("color","white");
+       				// CURSEUR TYPING
+       				$("#curseur").css("color","white");
+       				// SWITCH ON
+            		theme_switcher.checked = true;
+        		}else{
+        			// CLEAN DARK DU LOCAL
+            		window.localStorage.clear();
+             		localStorage.setItem('theme', 'LIGHT');
+            		// CHANGEMENT BACKGROUND BODY LIGHT + NAV
+            		$("body").css("background-color","white");
+        			$(".navbar").attr("class","navbar navbar-expand-md navbar-light bg-light");
+        			// TEXT TYPING
+        			$("#typing").css("color","teal");
+        			// CURSEUR TYPING
+        			$("#curseur").css("color","teal");
+        			// SWITCH OFF
+            		theme_switcher.checked = false;
+        		}
+    		}
+		</script>
+	
+	</div>
+
+	<p th:fragment="message(texte)" th:text="${texte}">un message</p>
+
+
+
+	<footer th:fragment="footer">
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col">
+				<hr/>
+					<p class="text-center" th:text="#{footer.message}"></p>
+				</div>
+			</div>
+		</div>
+	</footer>
+
+</body>
+</html>

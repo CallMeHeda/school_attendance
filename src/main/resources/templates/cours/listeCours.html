@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org"
+   xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragments/fragments.html :: head">
+</head>
+
+<body>
+	<div th:replace="fragments/fragments.html :: header"></div>
+
+	<main class="container">
+
+		<div class="row">
+			<div class="col">
+				<h3 class="title" th:text="#{cours.liste.titre}"></h3>
+				<hr/>
+			</div>
+		</div>
+
+		<!-- NOUVEAU COURS -->
+		<div class="row">
+			<div class="col">
+				<a sec:authorize="hasAnyRole('PROF','ADMIN')" th:href="@{/cours/add}">
+					<i class="fa fa-plus-square fa-2x float-right mr-5 add"></i>
+				</a>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="col">
+				<div th:if="${!coursList.isEmpty()}">
+					<table class="table">
+						<thead>
+							<tr>
+								<th th:text="#{cours.code}"></th>
+								<th th:text="#{cours.nom}"></th>
+								<th th:text="#{cours.nbSections}"></th>
+								<th th:text="#{actionsCRUD}"></th>
+							</tr>
+						</thead>
+
+						<tbody>
+							<tr th:each="cours: ${coursList}">
+								<td th:text="${cours.code}"></td>
+								<td th:text="${cours.nom}"></td>
+								<td th:text="${#sets.size(cours.sections)}"></td>
+								<!-- VUE DETAILS ICON -->
+								<td><a th:href="@{'/cours/'+ ${cours.code}}"><i
+										class="fa fa-eye text-success"></i>
+								</a> <!-- UPDATE ICON --> <a
+									th:href="@{|/cours/${cours.code}/update|}"><i
+										class="fa fa-pencil text-warning"></i>
+								</a>
+								
+								<!-- DELETE COURS -->								
+								<span 
+							       sec:authorize="hasAnyRole('PROF','ADMIN')"
+								   th:msgDelete="#{msgConfirmDelete}"	
+								   th:lienDelete="@{'/cours/'+ ${cours.code}+'/delete'}"
+								   th:csrfToken="${_csrf.token}"		
+								   th:csrfName="${_csrf.parameterName}"	
+								   th:onclick='javascript:
+								    var lien= this.getAttribute("lienDelete");
+								    var csrf={};
+								    csrf[this.getAttribute("csrfName")]=this.getAttribute("csrfToken");
+								    bootbox.confirm(this.getAttribute("msgDelete"),
+								    function(ok){
+								      if (ok){ post(lien,csrf);}
+								     })
+								    ' >
+								  <i class="fa fa-trash text-danger"></i>
+								</span>
+								
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div th:unless="${!coursList.isEmpty()}">
+					<p th:text="#{cours.Aucun}"></p>
+				</div>
+			</div>
+		</div>
+
+	</main>
+	<div th:replace="fragments/fragments.html :: scripts"></div>
+	<div th:replace="fragments/fragments.html :: theme"></div>
+	<div th:replace="fragments/fragments.html :: footer"></div>
+</body>
+</html>
+

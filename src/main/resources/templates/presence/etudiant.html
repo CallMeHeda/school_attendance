@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/fragments.html :: head">
+</head>
+
+<body>
+	<div th:replace="fragments/fragments.html :: header"></div>
+
+	<main class="container">
+		<div class="row">
+			<div class="col-11">
+				<h3 class="title"
+					th:text="#{etudiant.detail.titre} + ' ' + ${etudiant.prenom} + ' ' +${etudiant.nom}">Titre</h3>
+				<hr>
+			</div>
+		</div>
+
+		<!-- AVERTISSEMENT QUOTA ABSENCE -->
+		<div class="msgQuota mt-3">
+			<h4 class="quotaAbs" th:align="center"
+				th:if="${pourcentageAbsence == 30}"
+				th:text="#{presence.quota.limiteDebut} + ' ' +${etudiant.nom} + 
+			' ' + ${etudiant.prenom} + ' ' + #{presence.quota.limiteFin}"></h4>
+			<h4 class="quotaAbs" th:align="center"
+				th:if="${pourcentageAbsence > 30}"
+				th:text="${etudiant.nom} + ' ' + ${etudiant.prenom} + ' ' 
+			+ #{presence.quota.depasse}"></h4>
+		</div>
+		<div class="container-stud mt-4">
+			<div class="card-deck rowCard">
+				<div class="card bg-success columnCard">
+					<div class="container_card">
+						<i class="fa fa-info-circle float-left ml-1 mt-2"></i>
+						<div class="card-body text-center">
+							<div class="card-text"
+								th:text="#{etudiant.id} + ' : ' + ${etudiant.id}">Code</div>
+
+							<div class="card-text"
+								th:text="#{user.username} + ' : ' + ${etudiant.user.username}">Username</div>
+
+							<div class="card-text"
+								th:text="#{etudiant.nom} + ' : ' + ${etudiant.nom}">Nom</div>
+
+							<div class="card-text"
+								th:text="#{etudiant.prenom} + ' : ' + ${etudiant.prenom}">Prenom</div>
+
+							<div class="card-text"
+								th:text="#{etudiant.email} + ' : ' + ${etudiant.email}">Email</div>
+
+							<div class="card-text"
+								th:text="#{user.role} + ' : ' + ${etudiant.user.role}">Role</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="card bg-info columnCard">
+					<div class="container_card">
+						<i class="fa fa-info-circle float-right mr-1 mt-2"></i>
+						<div class="card-body text-center">
+							<!-- NOMBRE D'HEURE DU COURS -->
+							<div class="card-text"
+								th:text="#{cours.nbHeures} + ' : ' + ${nbHeuresCours}"></div>
+
+							<!-- NOMBRE DE PRESENCE -->
+							<div class="card-text"
+								th:text="#{etudiant.nbPresence} + ' : ' + ${nbPresence}"></div>
+
+							<!-- NOMBRE D'ABSENCE -->
+							<div class="card-text"
+								th:text="#{etudiant.nbAbsence} + ' : ' + ${nbAbsence}"></div>
+
+							<!-- POURCENTAGE ABSENCE -->
+							<div class="card-text"
+								th:text="#{etudiant.quotaAbsence} + ' : ' + ${poucentageAbsence} +'% sur 30%'"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</main>
+
+	<div th:replace="fragments/fragments.html :: scripts"></div>
+	<div th:replace="fragments/fragments.html :: theme"></div>
+	<div th:replace="fragments/fragments.html :: footer"></div>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragments/fragments.html :: head">
+</head>
+
+<body>
+	<div th:replace="fragments/fragments.html :: header"></div>
+	<main class="container">
+		<div class="row">
+			<div class="col-1">
+				<a th:href="@{/}"><i class="fa fa-chevron-left"></i></a>
+			</div>
+			<div class="col-11">
+				<h3 th:text="#{user.changePw}">modification du password</h3>
+			</div>
+		</div>
+
+		<div th:errors="${userDto.*}" class="border pl-3 bg-warning">Toutes les erreurs</div>
+
+		<form method="post" th:object="${userDto}"
+			                  th:action="@{/user/__${userDto.username}__/update}">
+			               
+				<div class="row">
+				  <div class="col-md-6 mb-3">
+				    <label for="userDto.username" th:text="#{user.username}">Username</label>
+				    <input type="text" readonly="readonly" id="usernameField" th:field="*{username}" class="form-control"
+				   />
+				  </div>
+				  <div class="col-md-6 mb-3">
+				    <label for="user.role" th:text="#{user.role}"> Role</label> 
+				    <input type="text" readonly="readonly" th:field="*{role}" class="form-control"/> 
+				  </div>
+				</div>		   
+		   
+			<div class="form-group">
+				<label for="oldPassword" th:text="#{user.oldPassword}"></label> <input
+					type="password" th:field="*{oldPassword}" class="form-control"
+					th:classappend="${#fields.hasErrors('oldPassword')} ? is-invalid" required />
+				<small id="error_nom" th:errors="*{oldPassword}"
+					class="form-text text-danger">Erreur PW</small>
+			</div>
+
+			<div class="form-group">
+				<label for="password" th:text="#{user.newPassword}"></label> <input
+					type="password" th:field="*{password}" class="form-control"
+					th:classappend="${#fields.hasErrors('password')} ? is-invalid"
+					required /> <small id="error_password" th:errors="*{password}"
+					class="form-text text-danger">Erreur password</small>
+			</div>
+
+			<div class="form-group">
+				<label for="confirmPassword" th:text="#{user.confirmPassword}"></label> <input
+					type="password" th:field="*{confirmPassword}" class="form-control"
+					th:classappend="${#fields.hasErrors('confirmPassword')} ? is-invalid"
+					required /> <small id="error_confirmPassword" th:errors="*{confirmPassword}"
+					class="form-text text-danger">Erreur confirmPassword</small>
+			</div>
+			
+			<button type="submit" class="btn btn-outline-primary"
+				th:text="#{action.update}"></button>
+		</form>
+	</main>
+	<div th:replace="fragments/fragments.html :: scripts"></div>
+	<div th:replace="fragments/fragments.html :: theme"></div>
+	<div th:replace="fragments/fragments.html :: footer"></div>
+</body>
+</html>

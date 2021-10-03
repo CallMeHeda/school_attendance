@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/fragments.html :: head">
+</head>
+
+<body>
+	<div th:replace="fragments/fragments.html :: header"></div>
+
+	<main class="container">
+		<div class="row">
+			<div class="col-1">
+				<a th:href="@{/cours/liste}"><i class="fa fa-chevron-left"></i></a>
+			</div>
+			<div class="col-11">
+				<h3 class="title" th:text="#{cours.detail.titre}">Titre</h3>
+				<hr>
+			</div>
+		</div>
+		<div class="card-deck">
+			<div class="card bg-success">
+				<div class="container_card">
+					<div class="card-body text-center">
+						<div class="card-text" th:text="${cours.code}">Valeur</div>
+						<div class="card-text" th:text="${cours.nom}">Valeur</div>
+						<div class="card-text" th:text="${cours.nbPeriodes} + ' Périodes'">Valeur</div>
+						<div class="card-text"
+							th:text="${#sets.size(cours.sections)} + ' section(s) ' + '( '+${#strings.setJoin(cours.sections,' , ')+' )'}">Valeur</div>
+
+
+						<div class="card-icon">
+							<!-- ICON ADD -->
+							<div class="icon-card">
+								<a th:href="@{|/module/${cours.code}/add|}" data-toggle="tooltip" title="Add New Module"><i
+									class="fa fa-plus-square fa-2x float-right text-success"></i></a>
+							</div>
+							<!-- ICON LISTE -->
+							<div class="icon-card">
+								<a th:href="@{|/module/${cours.code}/liste|}" data-toggle="tooltip" title="Module List"><i
+									class="fa fa-list-ul fa-2x float-right text-success"></i></a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</main>
+
+	<div th:replace="fragments/fragments.html :: scripts"></div>
+	<script>
+	$(document).ready(function(){
+  		$('[data-toggle="tooltip"]').tooltip();
+	});
+	</script>
+	<div th:replace="fragments/fragments.html :: theme"></div>
+	<div th:replace="fragments/fragments.html :: footer"></div>
+</body>
+</html>

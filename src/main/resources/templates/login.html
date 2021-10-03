@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:tx="http://www.w3.org/1999/xhtml">
+<head th:replace="fragments/fragments.html :: head">
+<!-- <title th:text="#{application.title}"></title> -->
+</head>
+
+<body>
+	<div th:replace="fragments/fragments.html :: header"></div>
+	<main class="container" role="main">
+		<div class="row">
+			<div class="col">
+<!-- 				<div class="row"> -->
+<!-- 					<div class="col-md-4 offset-md-4 col-sm-12 col-xs-12"> -->
+<!-- 						<h2 class="text-center title" th:text="#{login.main_message}"></h2> -->
+<!-- 						<hr> -->
+<!-- 					</div> -->
+<!-- 				</div> -->
+
+				<br />
+
+				<!-- SOURCE CODEPEN -->
+				<section class="formLogin text-center">
+					<div class="login">
+						<div class="layer"></div>
+						<div class="intro">
+							<i class="fa fa-user fa-3x"></i>
+							<h2>LogIn</h2>
+						</div>
+						<form class="LoginForm" th:action="@{/login}" method="post">
+							<div th:if="${param.error!=null}">
+								<div class="alert alert-danger" th:text="#{incorrect.login}">
+								</div>
+							</div>
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<span class="input-group-text"><i
+										class="fa fa-user fa-fw"></i></span>
+								</div>
+								<input type="text" name="username" id="username"
+									class="form-control input-lg" placeholder="Username"/>
+							</div>
+
+							<div><div class="input-group">
+								<div class="input-group-prepend">
+									<span class="input-group-text"><i
+										class="fa fa-key fa-fw"></i></span>
+								</div>
+								<input type="password" name="password" id="passwordLog"
+									class="form-control input-lg" placeholder="Password"/>
+							</div>
+
+							<!-- VOIR MDP -->
+							<label> <input id="voir_mdp_login" name="voir_mdp_login"
+								type="checkbox" onclick="voir_mdp()"> Voir le
+								mot de passe
+							</label>
+							</div>
+
+							<div class="form-group">
+								<button type="submit" class="btn btn-outline-danger full-width"
+									th:text="#{login.sign_in}"></button>
+							</div>
+						</form>
+					</div>
+
+
+					<!-- INSCRIPTION -->
+					<div class="signup">
+						<div class="layer"></div>
+						<div class="intro">
+							<i class="fa fa-user fa-3x"></i>
+							<h2>Signup</h2>
+						</div>
+
+						<form class="signUpForm" th:action="@{user/signup}" method="post"
+							th:object="${user}">
+
+							<!-- ERREURS -->
+							<div th:errors="${user.*}" class="border pl-3 bg-warning">Toutes
+								les erreurs</div>
+
+							<!-- USERNAME -->
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<span class="input-group-text"><i
+										class="fa fa-user fa-fw"></i></span> <label for="userDto.username"></label>
+								</div>
+								<input type="text" id="usernameField" th:field="*{username}"
+									class="form-control input-lg" placeholder="Username" required/>
+							</div>
+
+							<!-- ROLES -->
+							<div class="form-group">
+								<div class="custom-control custom-radio custom-control-inline"
+									th:each="roleOpt : ${T(org.isfce.pid.model.Roles).values()}">
+									<input type="radio" class="custom-control-input" 
+									value="Un Role" name="role" th:field="*{role}" th:value="${roleOpt}" required/> <label
+										class="custom-control-label labelRole"
+										th:for="${#ids.prev('role')}" th:text="${roleOpt}">Info
+									</label>
+								</div>
+								<small th:errors="*{role}" class="form-text text-danger">ERREUR
+									ROLE</small>
+							</div>
+
+							<!-- PASSWORD -->
+							<div id="passwordSignup">
+							<div class="row">
+								<div class="input-group col">
+									<div class="input-group-prepend">
+										<span class="input-group-text"><i
+											class="fa fa-key fa-fw"></i></span> <label for="password"></label>
+									</div>
+									<input type="password" th:field="*{password}"
+										class="form-control input-lg" id="password_conf1" required
+										placeholder="password" />
+								</div>
+
+								<!-- PASSWORD CONFIRM -->
+								<div class="input-group col">
+									<div class="input-group-prepend">
+										<span class="input-group-text"><i
+											class="fa fa-key fa-fw"></i></span> <label for="confirmPassword"></label>
+									</div>
+									<input type="password" th:field="*{confirmPassword}"
+										class="form-control input-lg" id="password_conf" required
+										placeholder="password" />
+								</div>
+							</div>
+							<!-- VOIR MDP -->
+							<label> <input id="voir_mdp" name="voir_mdp"
+								type="checkbox" onclick="voir_mdp_inscription()">
+								Voir le mot de passe
+							</label>
+							</div>
+
+							<div class="form-group">
+								<button type="submit" class="btn btn-outline-dark full-width">S'inscrire</button>
+							</div>
+
+						</form>
+					</div>
+				</section>
+				<!--                 <div class="row"> -->
+				<!--                     <div class="col-md-4 offset-md-4 col-sm-12 col-xs-12"> -->
+				<!--                         <form role="form" th:action="@{/login}" method="post"> -->
+				<!--                             <div th:if="${param.error!=null}"> -->
+				<!--                                 <div class="alert alert-danger" th:text="#{incorrect.login}"> -->
+				<!--                                 </div> -->
+				<!--                             </div> -->
+				<!--                             <fieldset> -->
+				<!--                                 <div class="form-group"> -->
+				<!--                                     <input type="text" name="username" id="username" class="form-control input-lg" -->
+				<!--                                            placeholder="Username"> -->
+				<!--                                 </div> -->
+				<!--                                 <div class="form-group"> -->
+				<!--                                     <input type="password" name="password" id="password" class="form-control input-lg" placeholder="Password"> -->
+				<!--                                 </div> -->
+				<!--                                		<button type="submit" class="btn btn-outline-primary full-width" th:text="#{login.sign_in}"></button> -->
+				<!--                             </fieldset> -->
+				<!--                         </form>   -->
+				<!--                     </div> -->
+				<!--                 </div> -->
+			</div>
+		</div>
+	</main>
+
+	<div th:replace="fragments/fragments.html :: scripts"></div>
+	<script type="text/javascript">
+      $(document).ready( function() {
+        $(".login").css("cursor", "pointer");
+        $(".signup").css("cursor", "pointer");
+      
+      	$(function () {
+  			"use strict";
+    		$(".signup").on("click", function () {
+        		$(this).animate({width : "70%"}, 600).siblings().animate({width : "20%"}, 600);
+        		$(this).addClass("active").siblings().removeClass("active");
+        		if($(this).hasClass("active")) {
+            		$(".signup form").fadeIn(3000);
+            		$(".login form").hide();
+            		
+            		$(".signup").css("cursor", "auto");
+            		$(".login").css("cursor", "pointer");
+        		}
+
+    		});
+    
+    		//start login
+    		$(".login").on("click", function () {
+        		$(this).animate({width : "70%"}, 600).siblings().animate({width : "20%"}, 600);
+        		$(this).addClass("active").siblings().removeClass("active");
+        		if($(this).hasClass("active")) {
+            		$(".login form").fadeIn(3000);
+            		$(".signup form").hide();
+            		
+            		$(".login").css("cursor", "auto");
+            		$(".signup").css("cursor", "pointer");
+        		}
+        		});
+
+		});		
+	}); /*END DOC*/
+	
+	//Code pour afficher le mot de passe à la connexion
+    function voir_mdp() {
+    	var mdp = document.getElementById("passwordLog");
+        if (mdp.type === "password") {
+			mdp.type = "text";
+        }else{
+        	mdp.type = "password";
+        }
+    }
+   	//Code pour afficher le mot de passe à la connexion à l'inscription
+    function voir_mdp_inscription(){
+    	var mdpOne = document.getElementById("password_conf1");
+        var mdp = document.getElementById("password_conf");
+        if(mdp.type === "password" || mdpOne.type === "password"){
+        	mdp.type = "text";
+            mdpOne.type = "text";
+        }else{
+        	mdpOne.type = "password";
+        	mdp.type = "password";
+        }
+    }
+</script>
+	<div th:replace="fragments/fragments.html :: theme"></div>
+	<div th:replace="fragments/fragments.html :: footer"></div>
+</body>
+</html>

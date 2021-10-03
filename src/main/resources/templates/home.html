@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org"
+                xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragments/fragments.html :: head">
+</head>
+<body class="home">
+	<div th:replace="fragments/fragments.html :: header"></div>
+	<main class="container">
+<!-- 	<h1 class="title"> -->
+<!-- 		 <span  th:text="#{home.title} + ' ' +${cours} + ' ('+ ${prof}+')'">PID</span> -->
+<!-- 	</h1> -->
+
+	<div>
+	<h5 style="line-height:1.8em; text-align: center; margin-top: 40px;">
+		<span id="typing">
+		</span>
+		<span id="curseur">|</span>
+     </h5>
+     </div>
+	
+	<hr class="mb-5">
+<!-- 	<h2 class="subtitle text-success" th:text="#{home.titre}">un titre</h2> -->
+	<div class="d-inline-flex p-1" th:classappend="${#authentication.name ne 'anonymousUser'}?'bg-success':'bg-warning'">
+	 <div class="p-2" sec:authentication="name"></div>
+     <div class="p-2" sec:authentication="authorities"></div>
+    </div>
+    
+    <div class="homeButton container">
+   <nav class="text-center row justify-content-md-center">
+     <div class="col col-md-auto"><a class="btn btn-info btn-lg btn-block float-left coursBtn" th:href="@{/cours/liste}" th:text="#{cours.liste.titre}">cours</a></div>
+     <div class="col col-md-auto"><a class="btn btn-danger btn-lg btn-block profBtn" th:href="@{/professeur/liste}" th:text="#{professeur.liste.titre}">Prof</a></div>
+     <div class="col col-md-auto"><a class="btn btn-warning btn-lg btn-block float-right moduleBtn" th:href="@{/module/liste}" th:text="#{module.liste.titre}">Modules</a></div>
+	</nav></div>
+      
+	<div class="text-primary LocalInfo"><h6>Locale: <span th:text=" ${#locale}" class="text-danger">locale</span></h6>
+	<h6>Now: <span th:text="${#dates.createToday()}" class="text-danger">date</span></h6></div>
+	
+	</main>
+	<div th:replace="fragments/fragments.html :: scripts"></div>
+	
+	
+	
+	<div th:replace="fragments/fragments.html :: theme"></div>
+	<div th:replace="fragments/fragments.html :: footer"></div>
+</body>
+</html>

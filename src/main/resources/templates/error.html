@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/fragments.html :: head">
+</head>
+<body>
+	<div th:replace="fragments/fragments.html :: header"></div>
+
+	<main class="container">
+		<div class="row">
+			<div class="col">
+				<h3 class="text-center bg-danger text-white" th:text="#{error.page}"></h3>
+			</div>
+
+		</div>
+		<div class="row">
+			<div class="col">
+					<table class="table">
+						<thead class="table-warning">
+							<tr>
+								<th scope="col" th:text="#{error.head.element}">Element</th>
+								<th scope="col" th:text="#{error.head.contenu}">Value</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:if="${path}!=null">
+								<td scope="row">URL</td>
+								<td th:text="${path}">URL appelée</td>
+
+							</tr>
+							<tr th:if="${exception}!=null and ${exception.code}!=null">
+								<td scope="row">Message</td>
+								<td th:text="#{${exception.message}(${exception.code})}">code
+									de l'objet</td>
+							</tr>
+
+						</tbody>
+					</table>
+				</div>
+			</div>
+	</main>
+	<div th:replace="fragments/fragments.html :: scripts"></div>
+	<div th:replace="fragments/fragments.html :: theme"></div>
+	<div th:replace="fragments/fragments.html :: footer"></div>
+</body>
+</html>

@@ -1,0 +1,584 @@
+@charset "ISO-8859-1";
+
+.vo {
+	background: #1175e3;
+}
+
+i:hover {
+	/*   background-color: #b8faf7; */
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: none;
+}
+/* FOOTER */
+footer{
+	margin-top: 60px;
+}
+/* HOME */
+#curseur {
+    font-size: 20px;
+    animation: curseur 1s infinite;
+}
+
+@keyframes curseur {
+    0%{
+        opacity: 1;
+    }
+    50%{
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
+    }
+}
+#typing{
+	letter-spacing: 0.18em;
+	font-family: 'serif', sans-serif;
+	text-transform: uppercase;
+}
+.LocalInfo{	
+	margin-top: 90px;
+}
+.homeButton{
+	margin-top: 30px;
+}
+.coursBtn,.moduleBtn,.profBtn{
+	position: relative;
+    height: 50px;
+    border: none;
+    outline: none;
+    color: white;
+    cursor: pointer;
+   	text-transform: uppercase;
+   	font-weight: 600;
+   	font-family: serif;
+	text-align: center;
+	letter-spacing: 2px;
+    z-index: 0;
+    border-radius: 0px;
+}
+.coursBtn:hover,.moduleBtn:hover,.profBtn:hover{
+	color: black;
+}
+.coursBtn:before,.moduleBtn:before,.profBtn:before{
+	content: '';
+    background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+    position: absolute;
+    top: -3px;
+    left:-3px;
+    background-size: 400%;
+    z-index: -1;
+    filter: blur(5px);
+    width: calc(100% + 6px);
+    height: calc(100% + 6px);
+    animation: glowing 20s linear infinite;
+    opacity: 0;
+    transition: opacity .3s ease-in-out;
+    border-radius: 0px;
+}
+.coursBtn:active:after,.moduleBtn:active:after,.profBtn:after{
+	background: transparent;
+}
+.coursBtn:hover:before,.moduleBtn:hover:before,.profBtn:hover:before{
+    opacity: 1;
+}
+.coursBtn:hover:after,.moduleBtn:hover:after,.profBtn:hover:after{
+    z-index: -1;
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    border-radius: 0px;
+}
+.coursBtn:hover:after{
+	background: #5dade2;
+}
+.profBtn:hover:after{
+	background: #f1948a;
+}
+.moduleBtn:hover:after{
+	background: #f7dc6f;
+}
+@keyframes glowing {
+    0% { background-position: 0 0; }
+    50% { background-position: 550% 0; }
+    100% { background-position: 0 0; }
+}
+.btn-div{
+	margin-top: 25px;
+}
+/* TITLE ALL */
+.title{
+	margin-top: 40px;
+}
+.title,.subtitle,.subtitleTime,footer p {
+	color: teal;
+	font-family: serif;
+	font-size: 35px;
+	text-align: center;
+	letter-spacing: 2px;
+	word-spacing: 2px;
+	text-transform: uppercase;
+	font-weight: bold;
+}
+.subtitle{
+	color: #b7950b;
+	font-size: 20px;
+	margin-top: 20px;
+	margin-left: 50px;
+}
+.subtitleTime{
+	color: #b7950b;
+	font-size: 20px;
+	margin-right: 200px;
+}
+/* TABLE */
+hr {
+	border: 0;
+	margin-top: -5px;
+	height: 2px;
+	width: 70%;
+	background: linear-gradient(to right, transparent, #85c1e9, transparent);
+}
+
+table {
+	border-collapse: collapse;
+	overflow: hidden;
+	margin-top: 15px;
+}
+
+th,td {
+	padding: 15px;
+	color: white;
+	font-family: serif;
+	letter-spacing: 1px;
+	word-spacing: 2px;
+	text-transform: uppercase;
+	font-weight: bold;
+}
+
+td {
+	letter-spacing: 1px;
+	word-spacing: 2px;
+	text-transform: uppercase;
+	font-weight: lighter;
+	color: white;
+	font-weight: 500;
+}
+
+th, td {
+	text-align: center;
+}
+
+thead th,.form {
+	background-color: #2874a6;
+}
+
+tbody tr {
+	background-color: #aed6f1;
+}
+
+/* ADD ICON */
+.add{
+	color:  #a3e4d7;
+}
+.add:hover{
+	color: #1abc9c 
+}
+ /* ICONS READ, UPDATE, DELETE */
+ tbody a i:hover,tbody span i:hover{
+ 	zoom: 150%;
+ }
+  tbody a i,tbody span i{
+ 	margin: 0 1px 0 1px;
+ }
+
+/* FORM */
+.form{
+    margin-top: 15px;
+    width: 90%;   
+    border: double 5px white;
+    border-radius: 5px;
+    padding: 30px 10px;
+	margin-left: auto;
+	margin-right: auto;
+	background-color: #aed6f1;
+}
+input[type='text']{
+    border-radius: 0;
+    transition: 0.3s;
+}
+
+label{
+	display: block;
+	color: white;
+	font-family: serif;
+	font-size: 15px;
+	letter-spacing: 2px;
+	word-spacing: 2px;
+	text-transform: uppercase;
+	font-weight: bold;
+    text-align: center;
+}
+/* CHECKBOX */
+.checkboxSection{
+	text-align: center;
+}
+.custom-checkbox {
+    margin-top: 10px;
+    color: white;
+}
+.custom-control-label {
+    text-transform: uppercase;
+    font-family: sans-serif;
+    font-weight: 500;
+    margin-top: 8px;
+}
+
+/* BUTTON */
+.btn-form {
+	position: relative;
+	left: 27%;
+	top: 10px;
+}
+.anim,.anim:focus {
+    position: absolute;
+    width: 45%;
+    border-radius: 0;
+    transition: all 0.25s ease;
+    border: 2px solid white;
+    background-color:  #cd6155;
+    color: white;
+}
+
+.anim:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.anim:hover {
+    border: 2px solid white;
+    background-color: #cd6155;
+}
+
+.anim span,.button-presence {
+    position: relative;
+    text-align: center;
+    text-transform: uppercase;
+    font-family: serif;
+    font-weight: bold;
+    letter-spacing: 2px;
+    transition: all 1s;
+}
+
+button[type='submit'].anim::before {
+    content: "";
+    display: block;
+    background-color: #abebc6;
+    width: 0;
+    height: 38px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: all 1s;
+}
+
+.anim::before {
+    left: 50%;
+}
+
+button[type='submit'].anim:hover::before {
+    width: 433px;
+    left: 0;
+}
+
+button[type='submit']:hover span {
+    color: white;
+}
+.cancel{
+	text-align: right;
+	margin-top: 30px;
+	margin-right: 50px;
+}
+.cancel span{
+	position: relative;
+    text-align: center;
+    text-transform: uppercase;
+    font-family: serif;
+    font-weight: bold;
+    letter-spacing: 2px;
+    transition: all 1s;
+}
+/* VUES DETAILS */
+.card-deck{
+	margin: 80px 300px 0 300px;
+}
+.card {  
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  text-align: center;
+  color: whitesmoke;
+  background-color: whitesmoke;
+  box-shadow: 0 1px 1px rgba(0,0,0,0.1), 
+    0 2px 2px rgba(0,0,0,0.1), 
+    0 4px 4px rgba(0,0,0,0.1), 
+    0 8px 8px rgba(0,0,0,0.1),
+    0 16px 16px rgba(0,0,0,0.1);
+    cursor: pointer;
+}
+.card-body{
+	padding: 30px 0;
+}
+.icon-card{
+	display: inline-block;
+	padding: 10px;
+	margin-top: 10px;
+}
+.container_card:hover .icon-card {
+	transform: translate(2px, 3px);
+}
+.container_card {
+	position: relative;
+  	padding: 0;
+  	overflow: hidden;
+  	max-width: 100%;
+}
+
+.icon_card {
+	position: relative;
+	bottom: 0;
+	padding: 10%;
+  	z-index: 1;
+  	transition: all 0.5s ease;
+}
+.card-icon {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  opacity: 0;
+  background-color: whitesmoke;
+  transform: translate(0px, 80px);
+  transition: all 0.2s ease-in-out;
+}
+.container_card:hover .card-icon {
+  opacity: 1;
+}
+.card-text{
+	display: block;
+	color: white;
+	font-family: serif;
+	word-spacing: 2px;
+	text-transform: uppercase;
+    text-align: center;	
+}
+.button-presence{
+	position: relative;
+	margin-right: 10px;	
+}
+.rowCard {
+	margin: 0 -5px;
+}
+
+.rowCard:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.columnCard {
+  float: left;
+  width: 25%;
+  padding: 0 10px;
+}
+/* LIST DEROULANTE */
+.select{
+	display: block;
+	margin: 0 auto;
+}
+.quotaAbs {
+	color: #dc3545;
+	letter-spacing: 2px;
+	word-spacing: 2px;
+	text-transform: uppercase;
+	font-weight: bold;
+}
+/*SEARCH BAR*/
+.containerSearchAdd{
+  margin: auto;
+  margin-top: 20px;
+  padding: 10px;
+}
+.addIcon{
+	width: 5%;
+  	float: right;
+  	margin-top: 15px;
+  	margin-right: 5px;;
+}
+.search{
+	margin-right: auto;
+	margin-left: auto;
+	width: 80%;
+}
+.searchInput{
+    font-family: FontAwesome;
+}
+/*CodePen*/
+.formLogin{
+    height: 90vh;
+    overflow: hidden;
+}
+/*start login*/
+.login{
+    float: left;
+    width: 50%;
+    background-color: #333;
+    color: #fff;
+    height: 90vh;
+    padding-top: 70px;
+    transition: border-radius .75s ease-in-out;
+    position: relative;
+}
+.login h2{
+	text-transform: uppercase;
+}
+.login .layer{
+    position: absolute;
+    top:0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(30,30,30,.4);
+    transition: border-radius .75s ease-in-out;
+    display: none
+}
+.login .intro{
+    position: relative;
+    margin-bottom: 15px;
+    margin-top: -20px;
+}
+.login .intro i{
+    border: 1px solid #fff;
+    height: 80px;
+    width: 80px;
+    line-height: 80px;
+    border-radius: 50%;
+}
+.login:hover{
+    border-radius: 0 70px 70px 0;
+}
+.login:hover .layer{
+    border-radius: 0 70px 70px 0;
+    display: block;
+}
+.login form{
+    display: none;
+    width: 50%;
+    margin-left: 25%;
+    position: relative;
+}
+.login button[type = submit] {
+/*     color: #cd3545; */
+    padding: 10px 30px;
+    border-radius: 5px;
+    float: center;
+    outline: none;
+    margin-top: 15px;
+   	text-transform: uppercase;
+}
+.login form a {
+    float: left;
+    margin-top: 12px;
+}
+
+/*end login media*/
+/*start signup*/
+.signup{
+    float: left;
+    width: 50%;
+    background-color: #cd4535;
+    color: #333;
+    height: 90vh;
+    padding-top: 70px;
+    transition: border-radius .75s ease-in-out;
+    position: relative;
+/*     border: 2px solid white; */
+}
+.signup h2{
+	text-transform: uppercase;
+}
+
+.signup .layer{
+    position: absolute;
+    top:0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(150,150,150,.1);
+    transition: border-radius .75s ease-in-out;
+    display: none;
+}
+.signup .intro{
+    position: relative;
+    margin-bottom: 15px;
+    margin-top: -20px;
+}
+.signup .intro i{
+    border: 1px solid #333;
+    height: 80px;
+    width: 80px;
+    line-height: 80px;
+    border-radius: 50%;
+}
+.signup:hover{
+    border-radius: 70px 0 0 70px;
+}
+.signup:hover .layer{
+    border-radius: 70px 0 0 70px;
+    display: block;
+}
+.signup form{
+    display: none;
+    width: 95%;
+    margin-left: 2.5%;
+    position: relative;
+/*     border: 2px solid black */
+}
+/*my form and inputs*/
+.input-group, .form-control {
+    height: 45px;
+    margin-bottom: 10px;
+}
+.signup .input-group, .form-control{
+	width: 55%;
+	margin-left: auto;
+	margin-right: auto;
+}
+.signup button[type = submit] {
+/*     color: #fff; */
+    padding: 10px 30px;
+    border-radius: 5px;
+    float: center;
+    outline: none;
+/*     background-color: #333; */
+	margin-top: 15px;
+	text-transform: uppercase;
+}
+.check{
+    display: inline-block;
+    position: absolute;
+    left: 20%;
+    top: 77%;
+}
+.intro h2{
+        font-size: 20px;
+}
+
+footer p{
+	font-size: 15px;
+}

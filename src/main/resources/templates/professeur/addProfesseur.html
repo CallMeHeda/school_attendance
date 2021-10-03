@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragments/fragments.html :: head">
+</head>
+
+<body>
+	<div th:replace="fragments/fragments.html :: header"></div>
+	<main class="container">
+		<div class="row">
+			<div class="col-1">
+				<a th:href="@{/professeur/liste}"><i class="fa fa-chevron-left"></i></a>
+			</div>
+			<div class="col-11">
+				<h3 class="title" th:text="#{professeur.add} + ' ' + ${userDto.username}">Ajout d'un professeur</h3>
+				<hr>
+			</div>
+		</div>
+
+		<div th:errors="${professeur.*}" class="border pl-3 bg-warning">Toutes les erreurs</div>
+
+		<form method="post" th:object="${professeur}" th:action="@{/professeur/add}" class="form">
+			
+			<div class="form-group">
+				<label for="nom" th:text="#{professeur.nom}"></label> <input
+					type="text" th:field="*{nom}" class="form-control"
+					th:classappend="${#fields.hasErrors('nom')} ? is-invalid" required />
+				<small id="error_nom" th:errors="*{nom}"
+					class="form-text text-danger">Erreur Nom</small>
+			</div>
+
+			<div class="form-group">
+				<label for="prenom" th:text="#{professeur.prenom}"></label> <input
+					type="text" th:field="*{prenom}" class="form-control"
+					th:classappend="${#fields.hasErrors('prenom')} ? is-invalid"
+					required /> <small id="error_prenom" th:errors="*{prenom}"
+					class="form-text text-danger">Erreur prenom</small>
+			</div>
+
+			<div class="form-group">
+				<label for="email" th:text="#{professeur.email}"></label> <input
+					type="text" th:field="*{email}" class="form-control"
+					th:classappend="${#fields.hasErrors('email')} ? is-invalid"
+					required /> <small id="error_email" th:errors="*{email}"
+					class="form-text text-danger">Erreur email</small>
+			</div>
+			
+			<div class="form-group" hidden="">
+				<label for="id" th:text="#{professeur.id}"></label>
+				 <input type="text" disabled="disabled" th:field="*{id}" class="form-control" th:classappend="${#fields.hasErrors('id')} ? is-invalid" required />
+				 <small id="error_id"
+					th:errors="*{id}" class="form-text text-danger">L'id est invalide</small> 		
+			</div>
+			
+<!-- 			<div class="form-group"> -->
+<!-- 				<label for="user" th:text="#{user.username}"></label> -->
+<!-- 				<div class="input-group"> -->
+<!-- 				<input type="text" id="usernameField" th:field="*{user.username}" class="form-control" -->
+<!-- 					disabled="disabled"/> -->
+<!--     			<i class="fa fa-check-square fa-2x text-success" th:id="usernameValide"   ></i> -->
+<!--   				<i class="fa fa-times fa-2x text-danger " th:id="usernameNonValide" ></i>   -->
+<!--   				</div> -->
+<!-- 			</div> -->
+
+				<div class="form-group" hidden="">
+				<label for="user" th:text="#{user.username}"></label>
+				<select th:field="*{user.username}" class="select">
+					<option th:each="user : ${userDto}" th:value="${user.username}" 
+					th:text="${user.username}">	
+					</option>
+				</select>
+			</div>
+			
+			<div class="form-group" hidden="">
+				<label for="user" th:text="#{user.password}"></label>
+				<select th:field="*{user.password}" class="select">
+					<option th:each="user : ${userDto}" th:value="${user.password}" 
+					th:text="${user.password}">	
+					</option>
+				</select>
+			</div>
+			
+			<div class="form-group" hidden="">
+				<label for="user" th:text="#{user.confirmPassword}"></label>
+				<select th:field="*{user.confirmPassword}" class="select">
+					<option th:each="user : ${userDto}" th:value="${user.confirmPassword}" 
+					th:text="${user.confirmPassword}">	
+					</option>
+				</select>
+			</div>
+			
+			<div class="form-group" hidden="">
+				<label for="user" th:text="#{user.role}"></label>
+				<select th:field="*{user.role}" class="select">
+					<option th:each="user : ${userDto}" th:value="${user.role}" 
+					th:text="${user.role}">	
+					</option>
+				</select>
+			</div>
+				
+<!-- 			<div class="form-group"> -->
+<!-- 				<label for="user" th:text="#{user.password}"></label> -->
+<!-- 				<input type="password" th:field="*{user.password}" class="form-control" -->
+<!-- 					disabled="disabled" /> -->
+<!-- 			</div> -->
+
+<!-- 			<div class="form-group"> -->
+<!-- 				<label for="user" -->
+<!-- 					th:text="#{user.confirmPassword}"></label> <input -->
+<!-- 					type="password" th:field="*{user.confirmPassword}" class="form-control" disabled="disabled"/> -->
+<!-- 			</div> -->
+			
+<!-- 			<div class="form-group"> -->
+<!-- 				<label for="user" -->
+<!-- 					th:text="#{user.role}"></label> <input -->
+<!-- 					type="text" disabled="disabled" th:field="*{user.role}" -->
+<!-- 					class="form-control" -->
+<!-- 					/>  -->
+<!-- 			</div> -->
+
+			<div class="btn-form"><button type="submit" class="btn btn-outline-primary anim">
+			<span th:text="#{action.add} + ' ' + #{professeur}"></span></button></div>
+		</form>
+	</main>
+	<div th:replace="fragments/fragments.html :: scripts"></div>
+	<script type="text/javascript">
+      $(document).ready( function() {
+    	$('#usernameValide').hide();
+    	$('#usernameNonValide').hide();
+    
+    	$('#usernameField').change(function(){
+    		var username=$('#usernameField').val();
+    		$.ajax({
+    			type: 'GET',
+    			data:{},
+    			url:'/check/'+username,
+    			success: function(result){
+    				if(!result) {
+    					$('#usernameValide').show();
+    					$('#usernameNonValide').hide();
+    				}
+    				else
+    					{
+    					$('#usernameValide').hide();
+    					$('#usernameNonValide').show();
+    					}
+    		    }
+    		});
+    	   })
+    		}
+      )
+	</script>
+	<div th:replace="fragments/fragments.html :: theme"></div>
+	<div th:replace="fragments/fragments.html :: footer"></div>
+</body>
+</html>

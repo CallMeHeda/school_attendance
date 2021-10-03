@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org" 
+ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragments/fragments.html :: head">
+</head>
+
+<body>
+	<div th:replace="fragments/fragments.html :: header"></div>
+
+	<main class="container">
+
+		<div class="row">
+			<div class="col">
+				<h3 class="title" th:text="#{module.liste.titre}"></h3>
+				<hr/>
+			</div>
+		</div>
+		
+		<!-- SEARCH BAR -->
+		<div class="containerSearchAdd">
+		<div class="search"><input class="form-control searchInput" id="myInput" 
+		type="text" placeholder="&#xf002 " autofocus></div></div>		
+
+		<div class="row">
+			<div class="col">
+				<div th:if="${!moduleList.isEmpty()}">
+				<!-- SEARCH BAR -->
+					<table class="table">
+						<thead>
+							<tr>
+								<th th:text="#{module.code}"></th>
+								<th th:text="#{module.dateDebut}"></th>
+								<th th:text="#{module.dateFin}"></th>
+								<th th:text="#{actionsCRUD}"></th>
+							</tr>
+						</thead>
+
+						<tbody id="myTable">
+							<tr th:each="module: ${moduleList}" >
+								<td th:text="*{module.code}"></td>
+								<td th:text="*{module.dateDebut}"></td>
+								<td th:text="*{module.dateFin}"></td>
+								<td>
+									<!-- LISTE DES SEANCES -->
+									<a th:href="@{|/seance/${module.code}|}" data-toggle="tooltip" title="Sessions List">
+									<i class="fa fa-list-ul text-primary"></i></a>
+									<!-- DETAILS MODULE -->
+									<a th:href="@{'/module/'+ ${module.code}}"> <i class="fa fa-eye text-success"></i></a>
+									<!-- UPDATE MODULE PROF OU ADMIN -->
+									<a sec:authorize="hasAnyRole('PROF','ADMIN')" th:href="@{'/module/'+ ${module.code} +'/update'}"> 
+								    	<i class="fa fa-pencil text-warning"></i>
+									</a>
+									<!-- DELETE MODULE PROF OU ADMIN -->												
+							     	<span sec:authorize="hasAnyRole('PROF','ADMIN')" 
+							     		th:msgDelete="#{msgConfirmDelete}"	
+								   		th:lienDelete="@{'/module/'+ ${module.code}+'/delete'}"
+								   		th:csrfToken="${_csrf.token}"		
+								   		th:csrfName="${_csrf.parameterName}"	
+								   		th:onclick='javascript:
+								    		var lien= this.getAttribute("lienDelete");
+								    		var csrf={};
+								    		csrf[this.getAttribute("csrfName")]=this.getAttribute("csrfToken");
+								    		bootbox.confirm(this.getAttribute("msgDelete"),
+								    		function(ok){
+								      			if (ok){ post(lien,csrf);}
+								     		})'>
+								  		<i class="fa fa-trash text-danger"></i>
+									</span>
+<!-- 									LISTE DES ETUDIANTS INSCRITS AU MODULE -->
+									<a sec:authorize="hasAnyRole('SECRETARIAT','ADMIN')" 
+									th:href="@{|/inscription/${module.code}/students|}">
+									<i class="fa fa-users text-warning"></i></a>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div th:unless="${!moduleList.isEmpty()}">
+					<p th:text="#{listeVide}"></p>
+				</div>
+			</div>
+		</div>
+	</main>
+	<div th:replace="fragments/fragments.html :: scripts"></div>
+	<script>
+		$(document).ready(function(){
+			// RECHERCHE MODULE
+ 			$("#myInput").on("keyup", function() {
+    			var value = $(this).val().toLowerCase();
+    			$("#myTable tr").filter(function() {
+      				$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    			});
+  			});
+  			
+  			// TOOLTIP
+  			$(document).ready(function(){
+  				$('[data-toggle="tooltip"]').tooltip();
+			});
+		});
+</script>
+	<div th:replace="fragments/fragments.html :: theme"></div>
+	<div th:replace="fragments/fragments.html :: footer"></div>
+</body>
+</html>

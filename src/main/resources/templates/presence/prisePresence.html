@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragments/fragments.html :: head">
+</head>
+
+<body>
+	<div th:replace="fragments/fragments.html :: header"></div>
+
+	<main class="container">
+
+		<div class="row">
+			<div class="col">
+				<h3 class="title" th:text="#{presence} + ' ' + ${module.code}"></h3>
+				<hr>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col">
+				<div th:if="${!presences.presencesDto.isEmpty()}">
+					<form
+						th:action="@{/presence/__${presences.presencesDto[0].seance.module.code}__/__${presences.presencesDto[0].seance.id}__/update}"
+						th:object="${presences}" method="post">
+						<table class="table">
+							<thead>
+								<tr>
+									<th></th>
+									<th></th>
+									<th th:text="#{presence.etudiant.nom}"></th>
+									<th th:text="#{presence.etudiant.prenom}"></th>
+									<!-- 								<th>Presences</th> -->
+									<th class="typePresence" th:text="#{presence.typePresence}"></th>
+									<th th:text="#{presence.left}"></th>
+								</tr>
+							</thead>
+
+							<tbody>
+								<tr th:each="mesPresences, itemStat : *{presencesDto}">
+									<td><input type="hidden"
+										th:field="*{presencesDto[__${itemStat.index}__].id.seance_id}" />
+										<input type="hidden"
+										th:field="*{presencesDto[__${itemStat.index}__].id.etudiant_id}" />
+									</td>
+
+									<td><input type="hidden"
+										th:field="*{presencesDto[__${itemStat.index}__].seance}" /> <input
+										type="hidden"
+										th:field="*{presencesDto[__${itemStat.index}__].etudiant}" />
+									</td>
+
+									<td
+										th:text="*{presencesDto[__${itemStat.index}__].etudiant.nom}"></td>
+									<td
+										th:text="*{presencesDto[__${itemStat.index}__].etudiant.prenom}"></td>
+
+									<!-- TYPE PRESENCE -->
+									<td class="typePresence"><select
+										th:field="*{presencesDto[__${itemStat.index}__].typePresence}">
+											<option id="presentOpt"
+												th:each="presentOpt: ${T(org.isfce.pid.model.Presence.TYPE_PRESENCE).values()}"
+												th:value="${presentOpt}" th:text="${presentOpt}"></option>
+									</select></td>
+									<td>
+										<div class="form-group checkboxSection">
+											<div>
+												<input type="checkbox"
+													value="left" th:field="*{presencesDto[__${itemStat.index}__].leftBefore}"/>
+
+											</div>
+										</div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						<div class="text-center btn-div">
+							<button sec:authorize="hasAnyRole('PROF','ADMIN')" type="submit"
+								class="btn btn-outline-success button-presence"
+								th:text="#{action.validatePresence}"></button>
+						</div>
+					</form>
+				</div>
+				<div th:unless="${!presences.presencesDto.isEmpty()}">
+					<p th:text="#{presence.Aucun}"></p>
+				</div>
+			</div>
+		</div>
+	</main>
+	<div th:replace="fragments/fragments.html :: scripts"></div>
+
+	<script type="text/javascript">
+      $(document).ready( function() {
+      
+     	
+	});
+
+	</script>
+	<div th:replace="fragments/fragments.html :: theme"></div>
+	<div th:replace="fragments/fragments.html :: footer"></div>
+</body>
+</html>

@@ -1,0 +1,13 @@
+---spring:  profiles: testU
+  datasource:   initialization-mode: never  jpa:    hibernate.ddl-auto: create-drop    
+---
+spring:  profiles: dev   #Syntaxe change en Springboot2.4 ==> spring.config.activate.on-profile: dev
+  datasource:
+       # url: jdbc:h2:tcp://localhost/C:/db/pid2021/pidDB_2021
+        url: jdbc:h2:/C:/db/pid2021/pidDB_2021
+        username: sa
+        password:
+        driver-class-name: org.h2.Driver        initialization-mode: embedded
+  jpa:
+    hibernate.ddl-auto: update
+    database-platform: org.hibernate.dialect.H2Dialect  h2.console:      enabled: true      path: /h2      settings.trace: false  

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragments/fragments.html :: head">
+</head>
+
+<body>
+	<div th:replace="fragments/fragments.html :: header"></div>
+
+	<main class="container">
+		<div class="row">
+			<div class="col-11">
+				<h3 class="title" th:text="#{module.detail.titre}">Titre</h3>
+				<hr>
+			</div>
+		</div>
+
+		<div class="card-deck">
+			<div class="card bg-success">
+				<div class="container_card">
+					<i class="fa fa-info-circle float-left ml-3 mt-2"></i>
+					<div class="card-body text-center">
+						<div class="card-text" th:text="#{module} + ' ' + ${module.code} + ' du cours ' + ${module.cours.code}"></div>
+						<div class="card-text" th:text="#{module.moment} + ' : ' + ${module.moment}">Moment du module</div>
+						<div class="card-text" th:text="'Du ' + ${module.dateDebut} + ' au ' + ${module.dateFin}">Dates du module</div>
+						<div class="card-text" th:text="#{module.professeur} + ' : ' + ${module.prof.prenom} + ' ' +${module.prof.nom}">prof du module</div>
+					</div>
+					 <!-- UPDATE ICON --> 
+					 <a sec:authorize="hasAnyRole('PROF','ADMIN')" th:href="@{|/module/${module.code}/update|}"><i class="fa fa-pencil text-warning float-right mr-3 mb-3"></i></a>
+					 <!-- VUE ETUDIANT PRESENCES -->
+					<a sec:authorize="hasAnyRole('ETUDIANT')" th:href="@{'/presence/'+${module.code}+'/etudiant/'+ ${etudiant.id}}" > 
+						<i class="fa fa-address-card text-warning float-right mr-3 mb-3" data-toggle="tooltip" title="Mes presences"></i></a>
+				</div>
+			</div>
+		</div>
+
+	</main>
+
+	<div th:replace="fragments/fragments.html :: scripts"></div>
+	<script>
+  		// TOOLTIP
+  		$(document).ready(function(){
+  			$('[data-toggle="tooltip"]').tooltip();
+		});
+</script>
+	<div th:replace="fragments/fragments.html :: theme"></div>
+	<div th:replace="fragments/fragments.html :: footer"></div>
+</body>
+</html>

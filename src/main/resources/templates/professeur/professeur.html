@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/fragments.html :: head">
+</head>
+
+<body>
+	<div th:replace="fragments/fragments.html :: header"></div>
+
+	<main class="container">
+		<div class="row">
+			<div class="col-1">
+				<a th:href="@{/professeur/liste}"><i class="fa fa-chevron-left"></i></a>
+			</div>
+			<div class="col-11">
+				<h3 th:text="#{professeur.detail.titre}">Titre</h3>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-4" th:text="#{professeur.id}">Code</div>
+
+
+			<div class="col-8" th:text="${professeur.id}">Valeur</div>
+
+		</div>
+		
+		<div class="row">
+			<div class="col-4" th:text="#{user.username}">Username</div>
+
+			<div class="col-8" th:text="${professeur.user.username}">Valeur</div>
+
+		</div>
+
+		<div class="row">
+			<div class="col-4" th:text="#{professeur.nom}">Nom</div>
+
+			<div class="col-8" th:text="${professeur.nom}">Valeur</div>
+
+		</div>
+		<div class="row">
+			<div class="col-4" th:text="#{professeur.prenom}">Prenom</div>
+
+			<div class="col-8" th:text="${professeur.prenom}">Valeur</div>
+
+		</div>
+		<div class="row">
+			<div class="col-4" th:text="#{professeur.email}">Email</div>
+
+			<div class="col-8" th:text="${professeur.email}">Valeur</div>
+
+		</div>
+		<div class="row">
+			<div class="col-4" th:text="#{user.role}">Role</div>
+
+			<div class="col-8" th:text="${professeur.user.role}">Valeur</div>
+
+		</div>
+
+		<div class="row">
+			<div class="col p-2 text-left">
+				<a class="btn btn-outline-success"
+					th:href="@{|/professeur/${professeur.id}/update|}"
+					th:text="#{action.update}"></a>
+			</div>
+		</div>
+	</main>
+
+	<div th:replace="fragments/fragments.html :: scripts"></div>
+	<div th:replace="fragments/fragments.html :: theme"></div>
+	<div th:replace="fragments/fragments.html :: footer"></div>
+</body>
+</html>

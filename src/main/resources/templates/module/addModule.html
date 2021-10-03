@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/fragments.html :: head">
+</head>
+
+<body>
+	<div th:replace="fragments/fragments.html :: header"></div>
+	<main class="container">
+		<div class="row">
+			<div class="col-1">
+				<a th:href="@{/module/liste}"><i class="fa fa-chevron-left"></i></a>
+			</div>
+			<div class="col-11">
+				<h3 class="title" th:text="#{module.add}">Ajout d'un module</h3>
+				<hr>
+			</div>
+		</div>
+
+		<div th:errors="${module.*}" class="border pl-3 bg-warning">Toutes les erreurs</div>
+		
+		<form method="post" th:object="${module}" th:action="@{/module/add}" class="form">
+		
+			<!-- CODE MODULE -->
+			<div class="form-group">
+				<label for="code" th:text="#{module.code}"></label> 
+				<input	type="text" th:field="*{code}" class="form-control" 
+						th:classappend="${#fields.hasErrors('code')} ? is-invalid" required />
+				<small id="error_code" th:errors="*{code}" class="form-text text-danger">Le code est invalide</small>
+			</div>
+			
+			<!-- CHOIX MOMENTS -->
+			<div class="form-group text-center">				  						
+				<div class="custom-control custom-radio custom-control-inline" th:each="choixMoment : ${listeDesMoments}">						 
+					<input type="radio"  class="custom-control-input" value="Un Moment"
+							th:field="*{moment}" th:value="${choixMoment}"/> 
+					<label  class="custom-control-label"
+							th:for="${#ids.prev('moment')}" th:text="'&nbsp&nbsp'+${choixMoment}">Info
+					</label>
+				</div>				
+				<small th:errors="*{moment}" class="form-text text-danger">Erreur Moment</small>				
+			</div>
+
+			<!-- DATE DEBUT -->
+			<div class="form-group">
+				<label for="dateDebut" th:text="#{module.dateDebut}"></label>
+		 		<input	type="date" id="date" th:field="*{dateDebut}" class="form-control"
+		 				th:classappend="${#fields.hasErrors('dateDebut')} ? is-invalid" required />
+<!-- 		 		<button class="btn btn-outline-secondary calendar" type="button"><i class="fa fa-calendar"> -->
+<!-- 		 		</i></button> -->
+		 		<small id="error_dateDebut" th:errors="*{dateDebut}" class="form-text text-danger">Erreur date de debut</small>
+			</div>
+			
+			<!-- DATE FIN -->
+			<div class="form-group">
+				<label for="dateFin" th:text="#{module.dateFin}"></label>
+		 		<input	type="date" th:field="*{dateFin}" class="form-control"
+		 				th:classappend="${#fields.hasErrors('dateFin')} ? is-invalid" required /> 
+		 		<small id="error_dateFin" th:errors="*{dateFin}" class="form-text text-danger">Erreur date de fin</small>
+			</div>
+			
+			<!-- CODE DU COURS -->
+			<div class="form-group">
+				<label for="cours" th:text="#{cours.cours}"></label>
+				<select th:field="*{cours}" class="select">
+					<option th:each="cours : ${listeCours}" th:value="${cours.code}" 
+					th:text="${cours.code}">	
+					</option>
+				</select>
+			</div>
+					
+			<!-- LISTE DES PROFS -->	
+			<div class="form-group">
+				<label for="prof" th:text="#{module.professeur}"></label>
+				<select th:field="*{prof}" class="select">
+					<option th:each="prof : ${listeProfesseurs}" th:value="${prof.id}" 
+					th:text="${prof.prenom} + ' ' +${prof.nom}">	
+					</option>
+				</select>
+			</div>
+			
+			<div class="btn-form"><button type="submit" class="btn btn-outline-primary anim">
+			<span th:text="#{action.add} + ' ' + #{module}"></span></button></div>
+		</form>
+	</main>
+	<div th:replace="fragments/fragments.html :: scripts"></div>
+	<div th:replace="fragments/fragments.html :: theme"></div>
+	<div th:replace="fragments/fragments.html :: footer"></div>
+
+</body>
+</html>
